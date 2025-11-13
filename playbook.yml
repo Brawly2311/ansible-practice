@@ -1,0 +1,15 @@
+---
+- name: Configurar servidores
+  hosts: servers
+  tasks:
+    - name: Actualizar sistema
+      apt: update_cache=yes upgrade=dist
+    - name: Crear usuario itla
+      user: name=itla
+    - name: Crear carpeta app
+      file: path=/home/itla/app state=directory owner=itla
+    - name: Crear archivo hola.txt
+      copy: content="Hola Mundo" dest=/home/itla/app/hola.txt owner=itla
+    - name: Instalar aplicaciones
+      apt: name={{ item }} state=present
+      loop: [cowsay, htop]
